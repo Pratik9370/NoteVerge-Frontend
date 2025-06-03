@@ -21,7 +21,7 @@ const NoteState = (props) => {
   // Fetch notes from API
   const fetchNotes = useCallback(async () => {
     try {
-      const response = await ("https://backend-kvcg.onrender.com/api/notes/readNotes", {
+      const response = await fetch("https://backend-kvcg.onrender.com/api/notes/readNotes", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
