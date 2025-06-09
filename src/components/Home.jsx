@@ -5,7 +5,7 @@ import Alert from './Alert'
 
 const Home = () => {
   const context = useContext(noteContext)
-  const { notes, setTitle, setDescription, setTag, handleSubmit, isAlert, setIsAlert, alertMessage, alertColor, allTags, setShowTag, setFile} = context
+  const { notes, setTitle, setDescription, setTag, handleSubmit, isAlert, setIsAlert, alertMessage, alertColor, allTags, setShowTag, setFile } = context
   const [searcgTag, setSearcgTag] = useState(null)
 
   const handleFileChange = (e) => {
@@ -15,13 +15,13 @@ const Home = () => {
     <>
       {isAlert && <div className='position-fixed z-3' style={{ width: "100%" }}><Alert color={alertColor} setIsAlert={setIsAlert} alertMessage={alertMessage} /></div>}
 
-      <div className="d-flex justify-content-between position-relative">
+      <div className="d-flex " style={{ width: "auto" }}>
         {/* Main Content */}
-        <div className="w-75">
+        <div style={{ width: "100%" }}>
           <div className="container my-4 lh-lg">
             <h2>Add a note</h2>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-              <div className="form-group">
+              <div className="form-group" style={{ width: "90%" }}>
                 <label htmlFor="noteTitle">Note title</label>
                 <input type="text" className="form-control" onChange={(e) => setTitle(e.target.value)} id="noteTitle" placeholder="Enter title" />
               </div>
@@ -33,9 +33,7 @@ const Home = () => {
                 <label htmlFor="noteTag">Note Tag</label>
                 <input type="text" className="form-control" onChange={(e) => setTag(e.target.value)} id="noteTag" placeholder="Tag" />
               </div>
-              <div>
-                <input type="file" onChange={handleFileChange}/>
-              </div>
+              
               <button type="submit" className="btn btn-primary mt-2">Submit</button>
             </form>
           </div>
@@ -43,49 +41,68 @@ const Home = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="d-flex flex-column align-items-start height-100">
-          <nav
-            className="bg-body-secondary shadow-sm border-end p-3 position-sticky"
-            id="sidebar"
-            style={{ width: "250px", borderRight: "3px solid #ddd", borderRadius: "0 10px 10px 0", top: "20px", height: "calc(100vh - 20px)" }}
-          >
-            <div className=' border-bottom border-3'>
-              <ul className='list-group'>
-                <li
-                  className="list-group-item border-0 shadow-sm mb-2 tag-item"
-                  style={{ borderRadius: "8px", transition: "all 0.2s ease-in-out", cursor: "pointer" }}
-                  role="button"
-                  onClick={() => setShowTag(null)} // or any value that represents "All Notes"
-                >
-                  📂 All Notes
-                </li>
-              </ul>
-            </div>
-            <h5 className="mb-3 text-primary fw-bold">📌 Tags</h5>
 
-            <form className="form-inline mb-3">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control rounded-start"
-                  onChange={(e) => { setSearcgTag(e.target.value) }}
-                  placeholder="Search Tag..."
-                  aria-label="Search Tag"
-                  aria-describedby="basic-addon1"
-                />
-                <span className="input-group-text bg-primary text-white rounded-end" id="basic-addon1">
-                  🔍
-                </span>
-              </div>
-            </form>
+        <button class="btn p-0" type="button" style={{ height: "5%", position: "sticky", top:"50px" }} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">🪟</button>
 
-            {/* Tags List */}
-            <ul className="list-group">
-              {/* Show All Notes Option */}
+      </div>
+      <div class="offcanvas offcanvas-end bg-body-secondary p-0" style={{maxWidth: "300px"}} tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header w-100">
+          <div className=' border-bottom border-3 mr-0' style={{width: "95%"}}>
+            <ul className='list-group' style={{ userSelect: "none"}}>
+              <li
+                className="list-group-item border-0 shadow-sm mb-2 tag-item"
+                style={{ borderRadius: "8px", transition: "all 0.2s ease-in-out", cursor: "pointer" }}
+                role="button"
+                onClick={() => setShowTag(null)} // or any value that represents "All Notes"
+              >
+                📂 All Notes
+              </li>
+            </ul>
+          </div>
+          <button type="button" class="btn-close text-reset mb-0 p-0" style={{ userSelect: "none"}} data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div className="d-flex flex-column align-items-start">
+            <nav
+              className="bg-body-secondary  position-sticky"
+              id="sidebar"
+            >
+              <h5 className="mb-3 text-primary fw-bold">📌 Tags</h5>
 
-              {allTags.map((tag, index) => (
-                searcgTag ? (
-                  tag.slice().includes(searcgTag) && (
+              <form className="form-inline mb-3">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control rounded-start"
+                    onChange={(e) => { setSearcgTag(e.target.value) }}
+                    placeholder="Search Tag..."
+                    aria-label="Search Tag"
+                    aria-describedby="basic-addon1"
+                  />
+                  <span className="input-group-text bg-primary text-white rounded-end" id="basic-addon1">
+                    🔍
+                  </span>
+                </div>
+              </form>
+
+              {/* Tags List */}
+              <ul className="list-group" style={{ userSelect: "none"}}>
+                {/* Show All Notes Option */}
+
+                {allTags.map((tag, index) => (
+                  searcgTag ? (
+                    tag.slice().includes(searcgTag) && (
+                      <li
+                        key={index}
+                        className="list-group-item border-0 shadow-sm mb-2 tag-item"
+                        style={{ borderRadius: "8px", transition: "all 0.2s ease-in-out", cursor: "pointer" }}
+                        role="button"
+                        onClick={() => setShowTag(tag)}
+                      >
+                        🏷️ {tag}
+                      </li>
+                    )
+                  ) : (
                     <li
                       key={index}
                       className="list-group-item border-0 shadow-sm mb-2 tag-item"
@@ -96,23 +113,11 @@ const Home = () => {
                       🏷️ {tag}
                     </li>
                   )
-                ) : (
-                  <li
-                    key={index}
-                    className="list-group-item border-0 shadow-sm mb-2 tag-item"
-                    style={{ borderRadius: "8px", transition: "all 0.2s ease-in-out", cursor: "pointer" }}
-                    role="button"
-                    onClick={() => setShowTag(tag)}
-                  >
-                    🏷️ {tag}
-                  </li>
-                )
-              ))}
-            </ul>
-          </nav>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
-
-
       </div>
     </>
   )
