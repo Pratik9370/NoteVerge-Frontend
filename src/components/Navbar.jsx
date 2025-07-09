@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate=useNavigate()
   const handleLogout = async () => {
     try {
-      const response = await fetch('https://backend-kvcg.onrender.com/api/auth/logout', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/logout', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
