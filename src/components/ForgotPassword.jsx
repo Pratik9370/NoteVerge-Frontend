@@ -20,7 +20,7 @@ const ForgotPassword = () => {
     const resetPassword = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetch('https://backend-kvcg.onrender.com/api/auth/resetPassword', {
+            const response = await fetch('https://backend-pk89.onrender.com/api/auth/resetPassword', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
