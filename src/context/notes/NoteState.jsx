@@ -21,7 +21,7 @@ const NoteState = (props) => {
   // Fetch notes from API
   const fetchNotes = useCallback(async () => {
     try {
-      const response = await fetch("https://backend-kvcg.onrender.com/api/notes/readNotes", {
+      const response = await fetch("https://backend-pk89.onrender.com/api/notes/readNotes", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const NoteState = (props) => {
       formData.append('tag', tag);
       formData.append('file', file); // this is the actual file
 
-      const response = await fetch('https://backend-kvcg.onrender.com/api/notes/addNote', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/notes/addNote', {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -76,7 +76,7 @@ const NoteState = (props) => {
 
   const handleDelete = async (note_id) => {
     try {
-      const response = await fetch(`https://backend-kvcg.onrender.com/api/notes/deleteNote/${note_id}`, {
+      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/deleteNote/${note_id}`, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +95,7 @@ const NoteState = (props) => {
 
   const handleEdit = async (note_id) => {
     try {
-      const response = await fetch(`https://backend-kvcg.onrender.com/api/notes/editNote/${note_id}`, {
+      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/editNote/${note_id}`, {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const NoteState = (props) => {
 
   const sendOTP = async (reciever) => {
     try {
-      const response = await fetch('https://backend-kvcg.onrender.com/api/auth/sendEmail', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/sendEmail', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +149,7 @@ const NoteState = (props) => {
 
   const forgotPasswordOtp = async (reciever) => {
     try {
-      const response = await fetch('https://backend-kvcg.onrender.com/api/auth/ForgotPasswordOtp', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/ForgotPasswordOtp', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +178,7 @@ const NoteState = (props) => {
 
   const verifyEmail = async (reciever, OTP) => {
     try {
-      const response = await fetch('https://backend-kvcg.onrender.com/api/auth/verifyEmail', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/verifyEmail', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
