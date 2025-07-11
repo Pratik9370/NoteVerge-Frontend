@@ -15,7 +15,7 @@ const NoteState = (props) => {
   const [alertColor, setAlertColor] = useSessionStorageState("alertColor", "")
   const [isOtpSending, setIsOtpSending] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false)
-  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const token = getCookie("token")
 
   // Fetch notes from API
@@ -51,7 +51,7 @@ const NoteState = (props) => {
       formData.append('title', title);
       formData.append('description', description);
       formData.append('tag', tag);
-      formData.append('file', file); // this is the actual file
+      formData.append('image', image); // this is the actual file
 
       const response = await fetch('https://backend-pk89.onrender.com/api/notes/addNote', {
         method: 'POST',
@@ -65,7 +65,7 @@ const NoteState = (props) => {
       setIsAlert(true)
       setAlertMessage("Note Added successfully")
       setAlertColor("success")
-      console.log(file)
+      console.log(image)
     } catch (error) {
       setIsAlert(true)
       setAlertMessage(error)
@@ -93,18 +93,22 @@ const NoteState = (props) => {
     }
   }
 
-  const handleEdit = async (note_id) => {
+  const handleEdit = async (note) => {
     try {
-      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/editNote/${note_id}`, {
-        method: 'PUT',
+      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/editNote/${note._id}`, {
+        method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
         credentials: "include", // Required to send cookies with cross-origin requests
-        body: JSON.stringify({ title, description, tag }),
+        body: JSON.stringify({ title: note.title, description: note.description, tag: note.tag }),
       })
-      fetchNotes()
+      const updatedNote = await response.json();
+      setNotes((prevNotes) =>
+        prevNotes.map((n) => (n._id === updatedNote._id ? updatedNote : n))
+      );
+
       setIsAlert(true)
       setAlertMessage("Note Edited successfully")
       setAlertColor("success")
@@ -199,7 +203,7 @@ const NoteState = (props) => {
   }, [fetchNotes]);
 
   return (
-    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setFile }}>
+    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes }}>
       {props.children}
     </NoteContext.Provider>
   );

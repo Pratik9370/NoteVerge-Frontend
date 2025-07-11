@@ -1,0 +1,14 @@
+#offcanvasToggleBtn {
+  top: 80px; /* Default for large screens */
+}
+
+@media (max-width: 768px) {
+  #offcanvasToggleBtn {
+    top: auto;
+    bottom: 20px;
+  }
+}
+
+body{
+  background-image: url('./assets/background.png');
+}
