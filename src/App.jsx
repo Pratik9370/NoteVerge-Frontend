@@ -20,7 +20,7 @@ function App() {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${getCookie("token")}`
+          "Authorization": `Bearer ${getCookie("auth-token")}`
         },
         credentials: "include"
       })
