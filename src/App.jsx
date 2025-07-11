@@ -31,7 +31,7 @@ function App() {
       setToken(text)
     }
     getUser()
-  }, [token])
+  }, [])
 
 
   return (
