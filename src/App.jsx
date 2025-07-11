@@ -16,7 +16,7 @@ function App() {
   const [token, setToken] = useState(null)
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch('https://backend-kvcg.onrender.com/api/auth/getUser', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/getUser', {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
