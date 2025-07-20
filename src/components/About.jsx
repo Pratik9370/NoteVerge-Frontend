@@ -11,11 +11,11 @@ const About = () => {
             borderBottom: 'none',
           }}
         >
-          <h2 className="text-center fw-bold mb-0">📚 About NoteVault</h2>
+          <h2 className="text-center fw-bold mb-0">📚 About NoteVerge</h2>
         </div>
         <div className="card-body bg-light">
           <p className="lead">
-            <strong>NoteVault</strong> is your personal, secure digital notebook built to help you organize thoughts, tasks, and information with ease. Designed for simplicity and speed, it gives you full control over your notes — anytime, anywhere.
+            <strong>NoteVerge</strong> is your personal, secure digital notebook built to help you organize thoughts, tasks, and information with ease. Designed for simplicity and speed, it gives you full control over your notes — anytime, anywhere.
           </p>
 
           <hr />
@@ -32,7 +32,7 @@ const About = () => {
           <hr />
 
           <p className="mt-3">
-            Whether you're jotting down quick thoughts or managing your daily tasks, <strong>NoteVault</strong> helps you stay organized with a user-friendly and powerful interface.
+            Whether you're jotting down quick thoughts or managing your daily tasks, <strong>NoteVerge</strong> helps you stay organized with a user-friendly and powerful interface.
           </p>
 
         </div>
