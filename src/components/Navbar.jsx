@@ -32,7 +32,7 @@ const Navbar = () => {
          style={{ background: 'linear-gradient(135deg, #4e54c8,rgb(161, 166, 254))' }}>
       <div className="container-fluid">
         <Link className="navbar-brand fw-bold fs-4" to="/">
-          📓 NoteVault
+          📓 NoteVerge
         </Link>
 
         <button
