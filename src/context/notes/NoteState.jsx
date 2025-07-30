@@ -16,6 +16,8 @@ const NoteState = (props) => {
   const [isOtpSending, setIsOtpSending] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false)
   const [image, setImage] = useState(null);
+  const [isNoteAdded, setIsNoteAdded] = useState()
+
   const token = getCookie("token")
 
   // Fetch notes from API
@@ -53,6 +55,8 @@ const NoteState = (props) => {
       formData.append('tag', tag);
       formData.append('image', image); // this is the actual file
 
+      setIsNoteAdded(true)
+
       const response = await fetch('https://backend-pk89.onrender.com/api/notes/addNote', {
         method: 'POST',
         headers: {
@@ -61,8 +65,9 @@ const NoteState = (props) => {
         credentials: "include", // Required to send cookies with cross-origin requests
         body: formData
       })
-      fetchNotes();
+      await fetchNotes();
       setIsAlert(true)
+      setIsNoteAdded(false)
       setAlertMessage("Note Added successfully")
       setAlertColor("success")
       console.log(image)
@@ -84,7 +89,7 @@ const NoteState = (props) => {
         },
         credentials: "include", // Required to send cookies with cross-origin requests
       })
-      fetchNotes()
+      await fetchNotes()
       setIsAlert(true)
       setAlertMessage("Note Deleted successfully")
       setAlertColor("success")
@@ -203,7 +208,7 @@ const NoteState = (props) => {
   }, [fetchNotes]);
 
   return (
-    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes }}>
+    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded }}>
       {props.children}
     </NoteContext.Provider>
   );

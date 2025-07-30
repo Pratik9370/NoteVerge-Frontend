@@ -5,7 +5,7 @@ import Alert from './Alert'
 
 const Home = () => {
   const context = useContext(noteContext)
-  const { notes, setTitle, setDescription, setTag, handleSubmit, isAlert, setIsAlert, alertMessage, alertColor, allTags, setShowTag, setImage, image } = context
+  const { notes, setTitle, setDescription, setTag, handleSubmit, isAlert, setIsAlert, alertMessage, alertColor, allTags, setShowTag, setImage, isNoteAdded } = context
   const [searcgTag, setSearcgTag] = useState(null)
 
   const handleFileChange = async (e) => {
@@ -75,7 +75,7 @@ const Home = () => {
                           </div>
 
                           <div className="text-end">
-                            <button type="submit" className="btn btn-primary px-4 rounded-pill">Submit</button>
+                            <button type="submit" className="btn btn-primary px-4 rounded-pill" disabled={isNoteAdded} >Submit</button>
                           </div>
 
                         </form>
