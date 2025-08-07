@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import noteContext from "../context/notes/noteContext";
 import Alert from "./Alert";
+import Loader from "./Loader"
 
 const Login = () => {
   const navigate = useNavigate();
   const context = useContext(noteContext)
-  const { isAlert, setIsAlert, setAlertMessage, setAlertColor, alertColor, alertMessage } = context
+  const { isAlert, setIsAlert, setAlertMessage, setAlertColor, alertColor, alertMessage, setLoading, loading } = context
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const response = await fetch("https://backend-pk89.onrender.com/api/auth/login", {
         method: "POST",
@@ -24,6 +26,7 @@ const Login = () => {
 
       const data = await response.json();
       console.log("Response Data:", data);
+      setLoading(false)
 
       if (response.ok) {
         console.log("Navigating to Home...");
@@ -45,7 +48,8 @@ const Login = () => {
 
     <>
       {isAlert && <div className='position-fixed z-3' style={{ width: "100%" }}><Alert color={alertColor} setIsAlert={setIsAlert} alertMessage={alertMessage} /></div>}
-      <div className="d-flex justify-content-center align-items-center vh-100">
+      {
+        loading ? <Loader /> : <div className="d-flex justify-content-center align-items-center vh-100">
         <div className="card p-4 shadow-lg" style={{ width: "350px" }}>
           <h3 className="text-center mb-3">Login</h3>
           <form onSubmit={handleLogin} id="registrationForm">
@@ -92,6 +96,7 @@ const Login = () => {
           </p>
         </div>
       </div>
+      }
     </>
   );
 };

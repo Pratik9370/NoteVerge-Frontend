@@ -17,6 +17,7 @@ const NoteState = (props) => {
   const [emailVerified, setEmailVerified] = useState(false)
   const [image, setImage] = useState(null);
   const [isNoteAdded, setIsNoteAdded] = useState()
+  const [loading, setLoading] = useState(false)
 
   const token = getCookie("token")
 
@@ -45,6 +46,7 @@ const NoteState = (props) => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault()
+
       if (!title || !description || !tag) {
         return (
           setIsAlert(true), setAlertMessage("Fill all the details of Note"), setAlertColor("danger"))
@@ -56,6 +58,7 @@ const NoteState = (props) => {
       formData.append('image', image); // this is the actual file
 
       setIsNoteAdded(true)
+      setLoading(true)
 
       const response = await fetch('https://backend-pk89.onrender.com/api/notes/addNote', {
         method: 'POST',
@@ -66,6 +69,7 @@ const NoteState = (props) => {
         body: formData
       })
       await fetchNotes();
+      setLoading(false)
       setIsAlert(true)
       setIsNoteAdded(false)
       setAlertMessage("Note Added successfully")
@@ -81,6 +85,7 @@ const NoteState = (props) => {
 
   const handleDelete = async (note_id) => {
     try {
+      setLoading(true)
       const response = await fetch(`https://backend-pk89.onrender.com/api/notes/deleteNote/${note_id}`, {
         method: 'DELETE',
         headers: {
@@ -90,6 +95,7 @@ const NoteState = (props) => {
         credentials: "include", // Required to send cookies with cross-origin requests
       })
       await fetchNotes()
+      setLoading(false)
       setIsAlert(true)
       setAlertMessage("Note Deleted successfully")
       setAlertColor("success")
@@ -100,6 +106,7 @@ const NoteState = (props) => {
 
   const handleEdit = async (note) => {
     try {
+      setLoading(true)
       const response = await fetch(`https://backend-pk89.onrender.com/api/notes/editNote/${note._id}`, {
         method: 'PATCH',
         headers: {
@@ -114,6 +121,7 @@ const NoteState = (props) => {
         prevNotes.map((n) => (n._id === updatedNote._id ? updatedNote : n))
       );
 
+      setLoading(false)
       setIsAlert(true)
       setAlertMessage("Note Edited successfully")
       setAlertColor("success")
@@ -124,6 +132,7 @@ const NoteState = (props) => {
 
   const sendOTP = async (reciever) => {
     try {
+      setLoading(true)
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/sendEmail', {
         method: "POST",
         headers: {
@@ -133,6 +142,8 @@ const NoteState = (props) => {
         credentials: "include",
       })
       const data = await response.json()
+      setLoading(false)
+
       if (data.message === "User with this email already exist") {
         setIsOtpSending(false)
         setIsAlert(true)
@@ -158,6 +169,7 @@ const NoteState = (props) => {
 
   const forgotPasswordOtp = async (reciever) => {
     try {
+      setLoading(true)
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/ForgotPasswordOtp', {
         method: "POST",
         headers: {
@@ -167,6 +179,8 @@ const NoteState = (props) => {
         credentials: "include",
       })
       const data = await response.json()
+      setLoading(false)
+
       if (response.ok) {
         setIsOtpSending(true)
         setIsAlert(true)
@@ -187,6 +201,7 @@ const NoteState = (props) => {
 
   const verifyEmail = async (reciever, OTP) => {
     try {
+      setLoading(true)
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/verifyEmail', {
         method: "POST",
         headers: {
@@ -197,6 +212,8 @@ const NoteState = (props) => {
       })
       const data = await response.json()
       setEmailVerified(data.verified)
+      setLoading(false)
+
     } catch (err) {
       console.error(err)
     }
@@ -208,7 +225,7 @@ const NoteState = (props) => {
   }, [fetchNotes]);
 
   return (
-    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded }}>
+    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded, loading, setLoading }}>
       {props.children}
     </NoteContext.Provider>
   );
