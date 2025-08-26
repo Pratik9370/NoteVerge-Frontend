@@ -10,6 +10,7 @@ const NoteState = (props) => {
   const [tag, setTag] = useState('')
   const [allTags, setAllTags] = useState([])
   const [showTag, setShowTag] = useState(null)
+  const [search, setSearch] = useState(null)
   const [isAlert, setIsAlert] = useSessionStorageState("isAlert", false)
   const [alertMessage, setAlertMessage] = useSessionStorageState("alertMessage", "")
   const [alertColor, setAlertColor] = useSessionStorageState("alertColor", "")
@@ -18,12 +19,15 @@ const NoteState = (props) => {
   const [image, setImage] = useState(null);
   const [isNoteAdded, setIsNoteAdded] = useState()
   const [loading, setLoading] = useState(false)
+  const [date, setDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
 
   const token = getCookie("token")
 
   // Fetch notes from API
   const fetchNotes = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch("https://backend-pk89.onrender.com/api/notes/readNotes", {
         method: "GET",
         headers: {
@@ -34,6 +38,7 @@ const NoteState = (props) => {
 
       });
       const data = await response.json();
+      setLoading(false)
       const tags = [...new Set(data.map(note => note.tag))];
       setAllTags(tags);
       console.log(allTags)
@@ -224,8 +229,13 @@ const NoteState = (props) => {
     fetchNotes();
   }, [fetchNotes]);
 
+  useEffect(() => {
+    console.log(search)
+  }, [search])
+  
+
   return (
-    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded, loading, setLoading }}>
+    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded, loading, setLoading, date, setDate, endDate, setEndDate, search, setSearch }}>
       {props.children}
     </NoteContext.Provider>
   );
