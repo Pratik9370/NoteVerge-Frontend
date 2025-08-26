@@ -10,8 +10,12 @@
     "dev": "concurrently \"vite\" \"nodemon ../backend/index.js \" "
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
+    "flatpickr": "^4.6.13",
     "react": "^19.0.0",
+    "react-date-range": "^2.0.1",
     "react-dom": "^19.0.0",
+    "react-flatpickr": "^4.0.11",
     "react-masonry-css": "^1.0.16",
     "react-router-dom": "^7.1.5",
     "uuid": "^11.1.0"

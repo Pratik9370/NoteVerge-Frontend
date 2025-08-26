@@ -10,17 +10,24 @@ const NoteState = (props) => {
   const [tag, setTag] = useState('')
   const [allTags, setAllTags] = useState([])
   const [showTag, setShowTag] = useState(null)
+  const [search, setSearch] = useState(null)
   const [isAlert, setIsAlert] = useSessionStorageState("isAlert", false)
   const [alertMessage, setAlertMessage] = useSessionStorageState("alertMessage", "")
   const [alertColor, setAlertColor] = useSessionStorageState("alertColor", "")
   const [isOtpSending, setIsOtpSending] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false)
   const [image, setImage] = useState(null);
+  const [isNoteAdded, setIsNoteAdded] = useState()
+  const [loading, setLoading] = useState(false)
+  const [date, setDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+
   const token = getCookie("token")
 
   // Fetch notes from API
   const fetchNotes = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch("https://backend-pk89.onrender.com/api/notes/readNotes", {
         method: "GET",
         headers: {
@@ -31,6 +38,7 @@ const NoteState = (props) => {
 
       });
       const data = await response.json();
+      setLoading(false)
       const tags = [...new Set(data.map(note => note.tag))];
       setAllTags(tags);
       console.log(allTags)
@@ -43,6 +51,7 @@ const NoteState = (props) => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault()
+
       if (!title || !description || !tag) {
         return (
           setIsAlert(true), setAlertMessage("Fill all the details of Note"), setAlertColor("danger"))
@@ -53,6 +62,9 @@ const NoteState = (props) => {
       formData.append('tag', tag);
       formData.append('image', image); // this is the actual file
 
+      setIsNoteAdded(true)
+      setLoading(true)
+
       const response = await fetch('https://backend-pk89.onrender.com/api/notes/addNote', {
         method: 'POST',
         headers: {
@@ -61,8 +73,10 @@ const NoteState = (props) => {
         credentials: "include", // Required to send cookies with cross-origin requests
         body: formData
       })
-      fetchNotes();
+      await fetchNotes();
+      setLoading(false)
       setIsAlert(true)
+      setIsNoteAdded(false)
       setAlertMessage("Note Added successfully")
       setAlertColor("success")
       console.log(image)
@@ -76,6 +90,7 @@ const NoteState = (props) => {
 
   const handleDelete = async (note_id) => {
     try {
+      setLoading(true)
       const response = await fetch(`https://backend-pk89.onrender.com/api/notes/deleteNote/${note_id}`, {
         method: 'DELETE',
         headers: {
@@ -84,7 +99,8 @@ const NoteState = (props) => {
         },
         credentials: "include", // Required to send cookies with cross-origin requests
       })
-      fetchNotes()
+      await fetchNotes()
+      setLoading(false)
       setIsAlert(true)
       setAlertMessage("Note Deleted successfully")
       setAlertColor("success")
@@ -95,6 +111,7 @@ const NoteState = (props) => {
 
   const handleEdit = async (note) => {
     try {
+      setLoading(true)
       const response = await fetch(`https://backend-pk89.onrender.com/api/notes/editNote/${note._id}`, {
         method: 'PATCH',
         headers: {
@@ -109,6 +126,7 @@ const NoteState = (props) => {
         prevNotes.map((n) => (n._id === updatedNote._id ? updatedNote : n))
       );
 
+      setLoading(false)
       setIsAlert(true)
       setAlertMessage("Note Edited successfully")
       setAlertColor("success")
@@ -119,6 +137,7 @@ const NoteState = (props) => {
 
   const sendOTP = async (reciever) => {
     try {
+      setLoading(true)
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/sendEmail', {
         method: "POST",
         headers: {
@@ -128,6 +147,8 @@ const NoteState = (props) => {
         credentials: "include",
       })
       const data = await response.json()
+      setLoading(false)
+
       if (data.message === "User with this email already exist") {
         setIsOtpSending(false)
         setIsAlert(true)
@@ -153,6 +174,7 @@ const NoteState = (props) => {
 
   const forgotPasswordOtp = async (reciever) => {
     try {
+      setLoading(true)
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/ForgotPasswordOtp', {
         method: "POST",
         headers: {
@@ -162,6 +184,8 @@ const NoteState = (props) => {
         credentials: "include",
       })
       const data = await response.json()
+      setLoading(false)
+
       if (response.ok) {
         setIsOtpSending(true)
         setIsAlert(true)
@@ -182,6 +206,7 @@ const NoteState = (props) => {
 
   const verifyEmail = async (reciever, OTP) => {
     try {
+      setLoading(true)
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/verifyEmail', {
         method: "POST",
         headers: {
@@ -192,6 +217,8 @@ const NoteState = (props) => {
       })
       const data = await response.json()
       setEmailVerified(data.verified)
+      setLoading(false)
+
     } catch (err) {
       console.error(err)
     }
@@ -202,8 +229,13 @@ const NoteState = (props) => {
     fetchNotes();
   }, [fetchNotes]);
 
+  useEffect(() => {
+    console.log(search)
+  }, [search])
+  
+
   return (
-    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes }}>
+    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded, loading, setLoading, date, setDate, endDate, setEndDate, search, setSearch }}>
       {props.children}
     </NoteContext.Provider>
   );

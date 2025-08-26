@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import noteContext from "../context/notes/noteContext";
 import Alert from "./Alert"
+import Loader from "./Loader";
 
 const SignupForm = () => {
     const context = useContext(noteContext)
-    const { isAlert, setIsAlert, setAlertMessage, setAlertColor, alertColor, alertMessage, sendOTP, verifyEmail, isOtpSending, setIsOtpSending, emailVerified } = context
+    const { isAlert, setIsAlert, setAlertMessage, setAlertColor, alertColor, alertMessage, sendOTP, verifyEmail, isOtpSending, setIsOtpSending, emailVerified, setLoading, loading } = context
     const navigate = useNavigate()
     const [timeLeft, setTimeLeft] = useState(null)
 
@@ -24,6 +25,7 @@ const SignupForm = () => {
     const handleSignup = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             const response = await fetch('https://backend-pk89.onrender.com/api/auth/createUser', {
                 method: 'POST',
                 headers: {
@@ -33,10 +35,11 @@ const SignupForm = () => {
                 body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password, })
             })
             const data = await response.json()
+            setLoading(false)
 
             if (response.ok) {
                 console.log("Navigating to Home...");
-                navigate(0); // Redirect after successful login
+                navigate('/login');
                 setIsAlert(true)
                 setAlertMessage("Account created successfully")
                 setAlertColor("success")
@@ -76,7 +79,7 @@ const SignupForm = () => {
     return (
         <>
             {isAlert && <div className='position-fixed z-3' style={{ width: "100%" }}><Alert color={alertColor} setIsAlert={setIsAlert} alertMessage={alertMessage} /></div>}
-            <div className="d-flex justify-content-center align-items-center vh-100">
+            {loading ? <Loader /> : <div className="d-flex justify-content-center align-items-center vh-100">
                 <div className="card p-4 shadow-lg" style={{ width: "350px" }}>
                     <h3 className="text-center mb-3">Sign Up</h3>
                     <form onSubmit={handleSignup}>
@@ -163,6 +166,7 @@ const SignupForm = () => {
                     </p>
                 </div>
             </div>
+            }
         </>
     );
 };

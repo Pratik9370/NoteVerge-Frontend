@@ -14,6 +14,7 @@ import ForgotPassword from './components/ForgotPassword.jsx';
 function App() {
 
   const [token, setToken] = useState(null)
+
   useEffect(() => {
     const getUser = async () => {
       const response = await fetch('https://backend-pk89.onrender.com/api/auth/getUser', {
@@ -54,6 +55,8 @@ function App() {
               <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
           )}
+
+          
 
 
         </Router>

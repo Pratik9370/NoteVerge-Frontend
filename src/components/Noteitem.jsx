@@ -17,11 +17,15 @@ const breakpointColumnsObj = {
 
 function Noteitem() {
     const context = useContext(noteContext)
-    const { notes, setNotes, handleDelete, handleSubmit, handleEdit, setTitle, setDescription, showTag, fetchNotes } = context
+    const { notes, setNotes, handleDelete, handleSubmit, handleEdit, setTitle, setDescription, showTag, fetchNotes, date, endDate, search } = context
     const [searchNote, setsSearchNote] = useState(null)
     const [selectedNote, setSelectedNote] = useState({ _id: "", title: "", description: "" });
     const handleEditClick = (note) => {
         setSelectedNote(note);
+    };
+
+    const formatDate = (date) => {
+        return new Date(date).toISOString().split("T")[0];
     };
 
     return (
@@ -37,8 +41,8 @@ function Noteitem() {
 
                 {notes.slice().reverse().map((note) => {
                     return (
-                        (note.tag == showTag || !showTag) && (
-                            <div className="card masonry-card border-0" style={{ maxWidth: "220px", boxShadow: 'rgb(46, 38, 77) 0px 20px 30px -10px'}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} key={note._id}>
+                        (((note.tag == showTag || !showTag) && ((new Date(date).toLocaleDateString('en-CA').slice(0,10) <= note.date.slice(0,10) && note.date.slice(0,10) <= new Date(endDate).toLocaleDateString('en-CA').slice(0,10)) || (!date && !endDate)) && ((note.title.toLowerCase().includes(search&&(search.toLowerCase())) || note.description.toLowerCase().includes(search&&(search.toLowerCase())) || !search)))) && (
+                            <div className="card masonry-card border-0" style={{ maxWidth: "220px", boxShadow: 'rgb(46, 38, 77) 0px 20px 30px -10px' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} key={note._id}>
 
                                 <div className="card-header d-flex justify-content-between align-items-center bg-dark text-light" >
                                     <div >{note.title}</div>
@@ -106,7 +110,7 @@ function Noteitem() {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" className="btn btn-primary">
+                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">
                                         Save Changes
                                     </button>
                                 </div>
