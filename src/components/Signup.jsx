@@ -26,7 +26,7 @@ const SignupForm = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            const response = await fetch('https://backend-pk89.onrender.com/api/auth/createUser', {
+            const response = await fetch('http://localhost:3000/api/auth/createUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': "application/json",

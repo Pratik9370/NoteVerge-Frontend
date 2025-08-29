@@ -22,7 +22,7 @@ const ForgotPassword = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            const response = await fetch('https://backend-pk89.onrender.com/api/auth/resetPassword', {
+            const response = await fetch('http://localhost:3000/api/auth/resetPassword', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

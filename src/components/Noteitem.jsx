@@ -41,7 +41,7 @@ function Noteitem() {
 
                 {notes.slice().reverse().map((note) => {
                     return (
-                        (((note.tag == showTag || !showTag) && ((new Date(date).toLocaleDateString('en-CA').slice(0,10) <= note.date.slice(0,10) && note.date.slice(0,10) <= new Date(endDate).toLocaleDateString('en-CA').slice(0,10)) || (!date && !endDate)) && ((note.title.toLowerCase().includes(search&&(search.toLowerCase())) || note.description.toLowerCase().includes(search&&(search.toLowerCase())) || !search)))) && (
+                        (((note.tag == showTag || !showTag) && ((new Date(date).toLocaleDateString('en-CA').slice(0, 10) <= note.date.slice(0, 10) && note.date.slice(0, 10) <= new Date(endDate).toLocaleDateString('en-CA').slice(0, 10)) || (!date && !endDate)) && ((note.title.toLowerCase().includes(search && (search.toLowerCase())) || note.description.toLowerCase().includes(search && (search.toLowerCase())) || !search)))) && (
                             <div className="card masonry-card border-0" style={{ maxWidth: "220px", boxShadow: 'rgb(46, 38, 77) 0px 20px 30px -10px' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} key={note._id}>
 
                                 <div className="card-header d-flex justify-content-between align-items-center bg-dark text-light" >
@@ -52,7 +52,37 @@ function Noteitem() {
                                     </div>
                                 </div>
 
-                                {note.image && <img src={note.image} className='img-fluid' alt="Uploaded" style={{ width: "100%", height: "100px", objectFit: "cover" }} />}
+                                {note.image && <span>
+                                    {
+                                        !note.image.includes("/image/") ? (
+                                            <a
+                                                href={`https://docs.google.com/gview?url=${encodeURIComponent(note.image)}&embedded=true`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{ display: "inline-block", border: "none" }}
+                                            >
+                                                <iframe
+                                                    src={`https://docs.google.com/gview?url=${encodeURIComponent(note.image)}&embedded=true`}
+                                                    style={{
+                                                        width: "100%",
+                                                        height: "100px",
+                                                        border: "none",          // removes iframe border
+                                                        overflow: "hidden",      // hides scrollbars
+                                                        pointerEvents: "none"    // disables controls
+                                                    }}
+                                                    title="PDF Thumbnail"
+                                                />
+                                            </a>
+                                        ) :
+                                            <a href={note.image} target='_blank'><img src={note.image} className='img-fluid' alt="Uploaded" style={{ width: "100%", height: "100px", objectFit: "cover" }} /></a>
+                                    }
+
+
+                                </span>
+                                }
+
+
+
 
                                 <div className="card-body text-dark">
                                     <p className="card-text">{note.description.length >= 40 ? (<span><span>{note.description.slice(0, 37)}</span> <span>...</span></span>) : note.description}</p>
@@ -96,7 +126,34 @@ function Noteitem() {
                                 </div>
 
                                 <div className='d-flex justify-content-center'>
-                                    {selectedNote.image && <img src={selectedNote.image} className='img-fluid' alt="Uploaded" style={{ width: "50%", height: "auto", objectFit: "cover" }} />}
+                                    {selectedNote.image && <span>
+                                    {
+                                        !selectedNote.image.includes("/image/") ? (
+                                            <a
+                                                href={`https://docs.google.com/gview?url=${encodeURIComponent(selectedNote.image)}&embedded=true`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{ display: "inline-block", border: "none" }}
+                                            >
+                                                <iframe
+                                                    src={`https://docs.google.com/gview?url=${encodeURIComponent(selectedNote.image)}&embedded=true`}
+                                                    style={{
+                                                        width: "100%",
+                                                        height: "100px",
+                                                        border: "none",          // removes iframe border
+                                                        overflow: "hidden",      // hides scrollbars
+                                                        pointerEvents: "none"    // disables controls
+                                                    }}
+                                                    title="PDF Thumbnail"
+                                                />
+                                            </a>
+                                        ) :
+                                            <a href={selectedNote.image} target='_blank'><img src={selectedNote.image} className='img-fluid' alt="Uploaded" style={{ width: "100%", height: "100px", objectFit: "cover" }} /></a>
+                                    }
+
+
+                                </span>
+                                }
                                 </div>
 
                                 <div className="form-group">
