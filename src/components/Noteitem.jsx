@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import noteContext from '../context/notes/noteContext'
 import deleteLogo from '../assets/delete.svg'
 import viewLogo from '../assets/viewLogo.svg'
@@ -16,6 +17,7 @@ const breakpointColumnsObj = {
 
 
 function Noteitem() {
+    const navigate = useNavigate();
     const context = useContext(noteContext)
     const { notes, setNotes, handleDelete, handleSubmit, handleEdit, setTitle, setDescription, showTag, fetchNotes, date, endDate, search } = context
     const [searchNote, setsSearchNote] = useState(null)
@@ -48,7 +50,7 @@ function Noteitem() {
                                     <div >{note.title}</div>
                                     <div className='d-flex justify-content-around gap-2 align-items-center'>
                                         <img height={20} onClick={() => { handleDelete(note._id) }} role='button' src={deleteLogo} alt="delete" />
-                                        <img height={20} src={viewLogo} data-bs-toggle="modal" data-bs-target="#exampleModal" alt="" role='button' onClick={() => handleEditClick(note)} />
+                                        <img height={20} src={viewLogo} alt="view" role="button" onClick={() => navigate(`/note/${note._id}`)} />
                                     </div>
                                 </div>
 
@@ -80,8 +82,6 @@ function Noteitem() {
 
                                 </span>
                                 }
-
-
 
 
                                 <div className="card-body text-dark">

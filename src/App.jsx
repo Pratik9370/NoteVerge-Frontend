@@ -9,6 +9,8 @@ import Login from './components/Login.jsx';
 import { getCookie } from './utils/getCookie.js'
 import Signup from './components/Signup.jsx';
 import ForgotPassword from './components/ForgotPassword.jsx';
+import NoteDetails from './components/NoteDetails.jsx';
+import EditNote from './components/EditNote.jsx';
 
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
                 <Route exact path="/" element={<Home />} />
                 <Route path="*" element={<Navigate to="/" />} />
                 <Route exact path="/about" element={<About />} />
+                <Route exact path="/note/:id" element={<NoteDetails />} />
+                <Route exact path="/editNote/:id" element={<EditNote />} />
               </Routes>
             </>
           ) : (

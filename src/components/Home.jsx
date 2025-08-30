@@ -65,7 +65,7 @@ const Home = () => {
                       </div>
 
                       <div className="mb-3">
-                        <label htmlFor="image" className="form-label">Upload Image (Optional)</label>
+                        <label htmlFor="image" className="form-label">Upload Attatchment (Optional)</label>
                         <input
                           type="file"
                           className="form-control"

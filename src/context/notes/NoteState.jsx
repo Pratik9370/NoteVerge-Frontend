@@ -88,6 +88,37 @@ const NoteState = (props) => {
     }
   }
 
+  const handleEdit = async (note) => {
+    try {
+      setLoading(true)
+      const formData = new FormData();
+      formData.append('title', note.title);
+      formData.append('description', note.description);
+      formData.append('tag', note.tag);
+      formData.append('image', note.image);
+
+      const response = await fetch(`http://localhost:3000/api/notes/editNote/${note._id}`, {
+        method: 'PATCH',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include", // Required to send cookies with cross-origin requests
+        body: formData
+      })
+      const updatedNote = await response.json();
+      setNotes((prevNotes) =>
+        prevNotes.map((n) => (n._id === updatedNote._id ? updatedNote : n))
+      );
+
+      setLoading(false)
+      setIsAlert(true)
+      setAlertMessage("Note Edited successfully")
+      setAlertColor("success")
+    } catch (error) {
+      console.error('Error Deleting Note:', error);
+    }
+  }
+
   const handleDelete = async (note_id) => {
     try {
       setLoading(true)
@@ -109,26 +140,21 @@ const NoteState = (props) => {
     }
   }
 
-  const handleEdit = async (note) => {
+  const handleDeleteDoc = async (note_id) => {
     try {
       setLoading(true)
-      const response = await fetch(`http://localhost:3000/api/notes/editNote/${note._id}`, {
-        method: 'PATCH',
+      const response = await fetch(`http://localhost:3000/api/notes/deleteDoc/${note_id}`, {
+        method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
         credentials: "include", // Required to send cookies with cross-origin requests
-        body: JSON.stringify({ title: note.title, description: note.description, tag: note.tag }),
       })
-      const updatedNote = await response.json();
-      setNotes((prevNotes) =>
-        prevNotes.map((n) => (n._id === updatedNote._id ? updatedNote : n))
-      );
-
+      await fetchNotes()
       setLoading(false)
       setIsAlert(true)
-      setAlertMessage("Note Edited successfully")
+      setAlertMessage("Document successfully")
       setAlertColor("success")
     } catch (error) {
       console.error('Error Deleting Note:', error);
@@ -232,10 +258,10 @@ const NoteState = (props) => {
   useEffect(() => {
     console.log(search)
   }, [search])
-  
+
 
   return (
-    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded, loading, setLoading, date, setDate, endDate, setEndDate, search, setSearch }}>
+    <NoteContext.Provider value={{ notes, setNotes, setTitle, setDescription, setTag, allTags, showTag, setShowTag, handleSubmit, handleDelete, handleDeleteDoc, handleEdit, title, description, isAlert, setIsAlert, alertMessage, setAlertMessage, alertColor, setAlertColor, sendOTP, verifyEmail, emailVerified, isOtpSending, setIsOtpSending, forgotPasswordOtp, setImage, fetchNotes, isNoteAdded, loading, setLoading, date, setDate, endDate, setEndDate, search, setSearch }}>
       {props.children}
     </NoteContext.Provider>
   );
