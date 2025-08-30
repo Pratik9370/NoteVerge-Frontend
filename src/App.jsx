@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch('http://localhost:3000/api/auth/getUser', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/getUser', {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",

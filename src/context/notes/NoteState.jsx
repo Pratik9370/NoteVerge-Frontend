@@ -28,7 +28,7 @@ const NoteState = (props) => {
   const fetchNotes = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch("http://localhost:3000/api/notes/readNotes", {
+      const response = await fetch("https://backend-pk89.onrender.com/api/notes/readNotes", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const NoteState = (props) => {
       setIsNoteAdded(true)
       setLoading(true)
 
-      const response = await fetch('http://localhost:3000/api/notes/addNote', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/notes/addNote', {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -97,7 +97,7 @@ const NoteState = (props) => {
       formData.append('tag', note.tag);
       formData.append('image', note.image);
 
-      const response = await fetch(`http://localhost:3000/api/notes/editNote/${note._id}`, {
+      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/editNote/${note._id}`, {
         method: 'PATCH',
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -122,7 +122,7 @@ const NoteState = (props) => {
   const handleDelete = async (note_id) => {
     try {
       setLoading(true)
-      const response = await fetch(`http://localhost:3000/api/notes/deleteNote/${note_id}`, {
+      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/deleteNote/${note_id}`, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ const NoteState = (props) => {
   const handleDeleteDoc = async (note_id) => {
     try {
       setLoading(true)
-      const response = await fetch(`http://localhost:3000/api/notes/deleteDoc/${note_id}`, {
+      const response = await fetch(`https://backend-pk89.onrender.com/api/notes/deleteDoc/${note_id}`, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
@@ -164,7 +164,7 @@ const NoteState = (props) => {
   const sendOTP = async (reciever) => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:3000/api/auth/sendEmail', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/sendEmail', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -201,7 +201,7 @@ const NoteState = (props) => {
   const forgotPasswordOtp = async (reciever) => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:3000/api/auth/ForgotPasswordOtp', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/ForgotPasswordOtp', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -233,7 +233,7 @@ const NoteState = (props) => {
   const verifyEmail = async (reciever, OTP) => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:3000/api/auth/verifyEmail', {
+      const response = await fetch('https://backend-pk89.onrender.com/api/auth/verifyEmail', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
